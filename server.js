@@ -34,6 +34,9 @@ app.use("/activity", activityRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
 
+app.get("/", (req, res) => {
+  res.json({ status: "Backend running" });
+});
 // 🚀 START SERVER PROPERLY
 const startServer = async () => {
   try {
