@@ -1,6 +1,7 @@
 const TaskComment = require("../model/TaskComment");
 const Task = require("../model/Task");
 const ProjectMember = require("../model/ProjectMember");
+const User=require("../model/User.js");
 const sendNotification=require('../config/sendNotification.js');
 const addComment = async (req,res)=>{
   try{
@@ -85,6 +86,13 @@ const getTaskComments = async (req,res)=>{
 
     const comments = await TaskComment.findAll({
       where:{taskId},
+       include: [
+    {
+      model: User,
+      as: "user",   
+      attributes: ["id", "name"],
+    },
+  ],
       order:[["createdAt","ASC"]]
     });
 

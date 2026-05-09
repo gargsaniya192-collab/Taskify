@@ -1,5 +1,6 @@
 const {DataTypes}=require("sequelize");
 const {sequelize}=require("../config/dbConnect");
+const projectMember=require('../model/ProjectMember');
 const Project=sequelize.define("Project",{
     title: {
     type: DataTypes.STRING,
@@ -19,4 +20,5 @@ const Project=sequelize.define("Project",{
 }
 
 });
+
 module.exports=Project;

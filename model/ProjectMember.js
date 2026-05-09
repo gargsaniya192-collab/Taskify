@@ -23,10 +23,3 @@ const ProjectMember = sequelize.define("ProjectMember", {
 });
 
 module.exports = ProjectMember;
-ProjectMember.belongsTo(User, {
-  foreignKey: "userId",
-});
-
-ProjectMember.belongsTo(Project, {
-  foreignKey: "projectId",
-});

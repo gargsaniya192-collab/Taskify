@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/dbConnect");
-
+const User = require("./User");
 const Task = sequelize.define("Task", {
   title: {
     type: DataTypes.STRING,
@@ -34,7 +34,12 @@ const Task = sequelize.define("Task", {
 
   assignedTo: {
     type: DataTypes.INTEGER
-  }
+  },
+  
+});
+Task.belongsTo(User, {
+  foreignKey: "assignedTo",
+  as: "user",  
 });
 
 module.exports = Task;

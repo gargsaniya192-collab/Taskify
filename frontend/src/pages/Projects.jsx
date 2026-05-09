@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+const user = JSON.parse(localStorage.getItem("user"));
 const STATUS_STYLES = {
   active: { label: "Active", bg: "#DCFCE7", color: "#166534" },
   paused: { label: "Paused", bg: "#FEF3C7", color: "#92400E" },
-  done:   { label: "Done",   bg: "#DBEAFE", color: "#1E40AF" },
+  done: { label: "Done", bg: "#DBEAFE", color: "#1E40AF" },
 };
 
 const AVATAR_COLORS = [
@@ -40,13 +40,15 @@ function Avatar({ initials, index }) {
 }
 
 function ProjectCard({ project, onClick }) {
+  const navigate = useNavigate();
+
   const status = STATUS_STYLES[project.status] || STATUS_STYLES.active;
   const members = project.members || [];
 
   return (
     <div
       style={styles.card}
-      onClick={onClick}   // 👈 CLICK HANDLER ADDED
+      onClick={onClick}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-4px)";
         e.currentTarget.style.boxShadow = "0 12px 28px rgba(0,0,0,0.12)";
@@ -81,9 +83,47 @@ function ProjectCard({ project, onClick }) {
           ))}
         </div>
 
-        <span style={styles.meta}>
-          Updated {project.updatedAt || "recently"}
-        </span>
+        {/* BUTTONS */}
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            style={styles.smallBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+          >
+            Members
+          </button>
+
+          <button
+            style={styles.smallBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/projects/${project.id}/tasks`);
+            }}
+          >
+            View Tasks
+          </button>
+          <button
+            style={styles.smallBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+
+              navigate(`/projects/${project.id}/activity`);
+            }}
+          >
+            Activity
+          </button>
+          <button
+            style={styles.smallBtnDark}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/projects/${project.id}/create-task`);
+            }}
+          >
+            + Task
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -94,18 +134,17 @@ export default function Projects() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  const navigate = useNavigate(); // 👈 IMPORTANT
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
-          "http://localhost:3000/projects/all",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+
+        const res = await axios.get("http://localhost:3000/projects/all", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
         setProjects(res.data.projects);
       } catch (err) {
         alert(err.response?.data?.message || "Failed to fetch projects");
@@ -126,7 +165,7 @@ export default function Projects() {
 
   return (
     <div style={styles.page}>
-      {/* Header */}
+      {/* HEADER */}
       <div style={styles.header}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <h2 style={styles.title}>Projects</h2>
@@ -136,7 +175,7 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Search */}
+      {/* SEARCH */}
       <div style={styles.toolbar}>
         <input
           style={styles.searchInput}
@@ -147,7 +186,7 @@ export default function Projects() {
         />
       </div>
 
-      {/* Content */}
+      {/* CONTENT */}
       {loading ? (
         <div style={styles.center}>
           <div style={styles.spinner} />
@@ -166,9 +205,7 @@ export default function Projects() {
             <ProjectCard
               key={p.id}
               project={p}
-              onClick={() =>
-                navigate(`/projects/${p.id}/add-members`) // 👈 NAVIGATION
-              }
+              onClick={() => navigate(`/projects/${p.id}/add-members`)}
             />
           ))}
         </div>
@@ -280,9 +317,23 @@ const styles = {
     borderTop: "1px solid #eee",
   },
 
-  meta: {
-    fontSize: 12,
-    color: "#888",
+  smallBtn: {
+    padding: "6px 10px",
+    fontSize: 11,
+    borderRadius: 8,
+    border: "1px solid #ddd",
+    background: "#fff",
+    cursor: "pointer",
+  },
+
+  smallBtnDark: {
+    padding: "6px 10px",
+    fontSize: 11,
+    borderRadius: 8,
+    border: "none",
+    background: "#111",
+    color: "#fff",
+    cursor: "pointer",
   },
 
   center: {

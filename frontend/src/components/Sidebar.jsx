@@ -13,6 +13,10 @@ const token = {
 };
 
 function Sidebar() {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+   const role = user.role;
+     console.log("USER FROM LOCALSTORAGE:", user);
+  console.log("ROLE:", role);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,6 +24,10 @@ function Sidebar() {
     { name: "Dashboard", path: "/dashboard" },
     { name: "Create Project", path: "/create-project" },
     { name: "Projects", path: "/projects" },
+     { name: "Your Tasks", path: "/my-tasks" },
+     ...(role === "manager" || role==="admin"
+    ? [{ name: "Task Requests", path: "/task-requests" }]
+    : []),
   ];
 
   return (

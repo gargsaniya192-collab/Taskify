@@ -1,4 +1,5 @@
  require('dotenv').config();
+ require("./model/associations");
  const cors = require("cors");
 const express=require("express");
 const { sequelize,dbConnection } = require("./config/dbConnect");
