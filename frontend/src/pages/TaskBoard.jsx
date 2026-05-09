@@ -53,7 +53,7 @@ export default function TaskBoard() {
     setOpen(true);
 
     try {
-      const res = await privateApi.get(`/tasks/${task.id}/comments`);
+      const res = await privateApi.get(`/comments/tasks/${task.id}/comments`);
       setComments(res.data);
     } catch (err) {
       console.log(err);
@@ -65,11 +65,11 @@ export default function TaskBoard() {
     if (!text.trim()) return;
 
     try {
-      await privateApi.post(`/tasks/${selTask.id}/comment`, { comment: text });
+      await privateApi.post(`/comments/tasks/${selTask.id}/comment`, { comment: text });
 
       setText("");
 
-      const res = await privateApi.get(`/tasks/${selTask.id}/comments`);
+      const res = await privateApi.get(`/comments/tasks/${selTask.id}/comments`);
       setComments(res.data);
     } catch (err) {
       console.log(err);
