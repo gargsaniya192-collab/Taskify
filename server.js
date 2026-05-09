@@ -4,8 +4,8 @@ require("./model/associations");
 const cors = require("cors");
 const express = require("express");
 
-const { sequelize, dbConnection } = require("./config/dbConnect");
-const createAdmin = require("./controller/createAdmin.js");
+const { dbConnection } = require("./config/dbConnect");
+// const createAdmin = require("./controller/createAdmin.js"); // keep optional
 
 // Routes
 const authRoutes = require("./routes/authRoutes.js");
@@ -34,24 +34,23 @@ app.use("/activity", activityRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
 
+// Health check
 app.get("/", (req, res) => {
   res.json({ status: "Backend running" });
 });
-// 🚀 START SERVER PROPERLY
+
+// 🚀 START SERVER (RAILWAY SAFE)
 const startServer = async () => {
   try {
-    // 1. Connect DB
     await dbConnection();
+    console.log("✅ Database connected successfully");
 
+    // OPTIONAL (uncomment if needed)
+    // await createAdmin();
 
-    console.log("✅ Database synchronized successfully");
+    const PORT = process.env.PORT;
 
-    // 3. Create admin user
-   //  await createAdmin();
-
-    // 4. Start server
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
 
