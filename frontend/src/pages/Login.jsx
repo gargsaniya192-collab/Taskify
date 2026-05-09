@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/auth";
 
+/* ─── inline styles as JS objects ─────────────────────────────────────────
+   No external CSS file needed. Drop this file and it works.
+   Fonts loaded via a <link> in your index.html:
+   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+─────────────────────────────────────────────────────────────────────────── */
 
 const token = {
   ink:      "#0f0e0d",

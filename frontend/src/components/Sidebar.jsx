@@ -12,9 +12,11 @@ const token = {
   geist: "'Geist', sans-serif",
 };
 
-function Sidebar({ onClose }) {
+function Sidebar() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const role = user.role;
+   const role = user.role;
+     console.log("USER FROM LOCALSTORAGE:", user);
+  console.log("ROLE:", role);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,16 +24,11 @@ function Sidebar({ onClose }) {
     { name: "Dashboard", path: "/dashboard" },
     { name: "Create Project", path: "/create-project" },
     { name: "Projects", path: "/projects" },
-    { name: "Your Tasks", path: "/my-tasks" },
-    ...(role === "manager" || role === "admin"
-      ? [{ name: "Task Requests", path: "/task-requests" }]
-      : []),
+     { name: "Your Tasks", path: "/my-tasks" },
+     ...(role === "manager" || role==="admin"
+    ? [{ name: "Task Requests", path: "/task-requests" }]
+    : []),
   ];
-
-  const handleNav = (path) => {
-    navigate(path);
-    if (onClose) onClose(); // close sidebar on mobile after tap
-  };
 
   return (
     <div style={s.sidebar}>
@@ -43,22 +40,21 @@ function Sidebar({ onClose }) {
             <BrandMark />
           </div>
           <span style={s.brandText}>TaskFlow</span>
-
-          {/* Close button — only visible on mobile via onClose prop */}
-          {onClose && (
-            <button onClick={onClose} style={s.closeBtn}>✕</button>
-          )}
         </div>
 
         {/* MENU */}
         <div style={s.menu}>
           {menu.map((item, i) => {
             const active = location.pathname === item.path;
+
             return (
               <div
                 key={i}
-                onClick={() => handleNav(item.path)}
-                style={{ ...s.item, ...(active ? s.activeItem : {}) }}
+                onClick={() => navigate(item.path)}
+                style={{
+                  ...s.item,
+                  ...(active ? s.activeItem : {}),
+                }}
               >
                 <span style={s.dot(active)} />
                 {item.name}
@@ -82,6 +78,7 @@ function Sidebar({ onClose }) {
   );
 }
 
+/* ICON */
 const BrandMark = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
     stroke="#c8873a" strokeWidth="1.75">
@@ -91,11 +88,15 @@ const BrandMark = () => (
   </svg>
 );
 
+/* STYLES */
 const s = {
   sidebar: {
     width: "260px",
-    boxSizing: "border-box",
+boxSizing: "border-box",
     height: "100vh",
+    position: "fixed",     // 🔥 IMPORTANT FIX
+    top: 0,
+    left: 0,
     background: token.paper,
     borderRight: `1px solid ${token.rule}`,
     padding: "30px 22px",
@@ -103,7 +104,7 @@ const s = {
     flexDirection: "column",
     justifyContent: "space-between",
     fontFamily: token.geist,
-    overflowY: "auto",
+    overflowY: "auto",     // prevents cut issues if menu grows
   },
 
   brand: {
@@ -122,24 +123,12 @@ const s = {
     alignItems: "center",
     justifyContent: "center",
     background: "#fff",
-    flexShrink: 0,
   },
 
   brandText: {
     fontFamily: token.serif,
     fontSize: 20,
     color: token.ink,
-    flex: 1,
-  },
-
-  closeBtn: {
-    background: "transparent",
-    border: "none",
-    fontSize: 18,
-    cursor: "pointer",
-    color: token.ink3,
-    marginLeft: "auto",
-    flexShrink: 0,
   },
 
   menu: {
@@ -171,7 +160,6 @@ const s = {
     height: 6,
     borderRadius: "50%",
     background: active ? token.ink : token.rule,
-    flexShrink: 0,
   }),
 
   logout: {
