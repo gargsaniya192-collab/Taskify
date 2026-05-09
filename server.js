@@ -43,8 +43,7 @@ const startServer = async () => {
     // 1. Connect DB
     await dbConnection();
 
-    // 2. Sync DB (create tables)
-    await sequelize.sync({ alter: true });
+
     console.log("✅ Database synchronized successfully");
 
     // 3. Create admin user
