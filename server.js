@@ -5,7 +5,6 @@ const cors = require("cors");
 const express = require("express");
 
 const { dbConnection } = require("./config/dbConnect");
-// const createAdmin = require("./controller/createAdmin.js"); // keep optional
 
 // Routes
 const authRoutes = require("./routes/authRoutes.js");
@@ -20,7 +19,13 @@ const userRoutes = require("./routes/userRoutes.js");
 
 const app = express();
 
-app.use(cors());
+// ✅ CORS must be first
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(express.json());
 
 // Routes
@@ -39,16 +44,12 @@ app.get("/", (req, res) => {
   res.json({ status: "Backend running" });
 });
 
-// 🚀 START SERVER (RAILWAY SAFE)
 const startServer = async () => {
   try {
     await dbConnection();
     console.log("✅ Database connected successfully");
 
-    // OPTIONAL (uncomment if needed)
-    // await createAdmin();
-
-    const PORT = process.env.PORT||3000;
+    const PORT = process.env.PORT || 3000;
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`🚀 Server running on port ${PORT}`);
