@@ -141,9 +141,12 @@ export default function Projects() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("http://localhost:3000/projects/all", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "https://taskify-production-cb14.up.railway.app/projects/all",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         setProjects(res.data.projects);
       } catch (err) {
