@@ -5,6 +5,7 @@ const cors = require("cors");
 const express = require("express");
 
 const { dbConnection } = require("./config/dbConnect");
+const createAdmin = require("./controller/createAdmin.js"); // ✅
 
 // Routes
 const authRoutes = require("./routes/authRoutes.js");
@@ -48,6 +49,8 @@ const startServer = async () => {
   try {
     await dbConnection();
     console.log("✅ Database connected successfully");
+
+    await createAdmin(); // ✅ creates admin once if not exists
 
     const PORT = process.env.PORT || 3000;
 
