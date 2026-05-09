@@ -47,7 +47,7 @@ const startServer = async () => {
     console.log("✅ Database synchronized successfully");
 
     // 3. Create admin user
-    await createAdmin();
+   //  await createAdmin();
 
     // 4. Start server
     const PORT = process.env.PORT || 3000;
