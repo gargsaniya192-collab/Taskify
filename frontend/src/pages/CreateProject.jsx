@@ -1,18 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import privateApi from "../services/privateApi";
-import Layout from "../components/Layout";
 
 const t = {
   ink: "#0f0e0d",
   ink2: "#3a3835",
-  ink3: "#7a776f",
-  paper: "#faf8f4",
   paper2: "#f2efe9",
   rule: "#dedad2",
   amber: "#c8873a",
   amberLt: "#f5e9d8",
-  geist: "'Geist', sans-serif",
   serif: "'Instrument Serif', serif",
 };
 
@@ -51,7 +47,7 @@ function CreateProject() {
   };
 
   return (
-    <Layout>
+    <>
       <div style={s.header}>
         <div style={s.eyebrow}>Projects</div>
         <div style={s.title}>Create a new project</div>
@@ -78,7 +74,7 @@ function CreateProject() {
           You can add members and tasks after creating the project.
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
 
