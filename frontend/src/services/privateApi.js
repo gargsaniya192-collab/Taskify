@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const privateApi = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://taskify-production-cb14.up.railway.app", // ← changed
 });
+
 
 privateApi.interceptors.request.use((config) => {
   const t = localStorage.getItem("token");
